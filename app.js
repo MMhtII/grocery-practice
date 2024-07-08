@@ -17,6 +17,8 @@ let editID = "";
 form.addEventListener("submit", addItem);
 //clear items
 clearBtn.addEventListener("click", clearItems);
+//
+
 // ****** FUNCTIONS **********
 function addItem(e) {
   e.preventDefault();
@@ -40,8 +42,15 @@ function addItem(e) {
                 <i class="fas fa-trash"></i>
               </button>
             </div>`;
+    const deleteBtn = element.querySelector(".delete-btn");
+    const editBtn = element.querySelector(".edit-btn");
+
+    deleteBtn.addEventListener("click", deleteFunc);
+    editBtn.addEventListener("click", editFunc);
+
     //append child
     list.appendChild(element);
+
     // display success alert
     displayAlert("item added to list", "success");
     //show container
@@ -69,14 +78,25 @@ function displayAlert(text, action) {
 }
 //clear items
 function clearItems() {
-  const items = document.querySelectorAll("grocery-item");
+  const items = document.querySelectorAll(".grocery-item");
+
   if (items.length > 0) {
     items.forEach(function (item) {
       list.removeChild(item);
     });
   }
-  container.classList.remove("show-container")
-  displayAlert("empty list", "danger")
+  container.classList.remove("show-container");
+  displayAlert("empty list", "danger");
+  setBackToDefault();
+  //localStorage.removeItem("list")
+}
+//edit function
+function editFunc() {
+  console.log("item edited");
+}
+//delete function
+function deleteFunc() {
+  console.log("item deleted");
 }
 //set back  to default
 function setBackToDefault() {
