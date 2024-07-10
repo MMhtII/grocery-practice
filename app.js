@@ -60,7 +60,11 @@ function addItem(e) {
     //set back to default
     setBackToDefault();
   } else if (value && editFlag) {
-    console.log("editing");
+    editElement.innerHTML = value;
+    displayAlert("value changed", "success");
+    //edit local storage
+    editLocalStorage(editID, value);
+    setBackToDefault();
   } else {
     displayAlert("please enter value", "danger");
   }
@@ -91,12 +95,30 @@ function clearItems() {
   //localStorage.removeItem("list")
 }
 //edit function
-function editFunc() {
-  console.log("item edited");
+function editFunc(e) {
+  const element = e.currentTarget.parentElement.parentElement;
+  //set edit item
+  editElement = e.currentTarget.parentElement.previousElementSibling;
+  //set form value
+  editFlag = true;
+  editID = element.dataset.id;
+  submitBtn.textContent = "edit";
+
+  // grocery.value = editElement.innerHTML
 }
 //delete function
-function deleteFunc() {
-  console.log("item deleted");
+function deleteFunc(e) {
+  const element = e.currentTarget.parentElement.parentElement;
+  const id = element.dataset.id;
+  list.removeChild(element);
+  if (list.children.length === 0) {
+    container.classList.remove("show-container");
+  }
+
+  displayAlert("item removed", "danger");
+  setBackToDefault();
+  //remove from local storage
+  //   removeFromLocalStorage(id)
 }
 //set back  to default
 function setBackToDefault() {
@@ -107,6 +129,18 @@ function setBackToDefault() {
 }
 // ****** LOCAL STORAGE **********
 function addToLocalStorage(id, value) {
-  console.log("added to local storage");
+  const grocery = { id, value };
+  let items = JSON.parse(localStorage.getItem("list"))
+    ? JSON.parse(localStorage.getItem("list"))
+    : [];
+  items.push(grocery);
+  localStorage.setItem("list", JSON.stringify(items));
+  console.log(items);
+
 }
+function removeFromLocalStorage(id) {}
+function editLocalStorage(id, value) {}
+localStorage.setItem("orange", JSON.stringify(["item", "item2"]));
+const oranges = JSON.parse(localStorage.getItem("orange"));
+localStorage.removeItem("orange");
 // ****** SETUP ITEMS **********
